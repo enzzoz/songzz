@@ -1,0 +1,43 @@
+import time
+from threading import Thread, Lock
+import sys
+
+lock = Lock()
+
+def animate_text(text, duration):
+  total_chars = len(text)
+  delay = duration / total_chars #Adjust typing speed based on duration
+  with lock:
+    for char in text:
+      sys.stdout.write(char)
+      sys.stdout.flush()
+      time.sleep(delay) #Adjust typing speed dynamically
+    print()
+
+def sing_lyric(lyric,delay, duration):
+  time.sleep(delay) #Wait before prining the lyric
+  animate_text(lyric, duration)
+
+def sing_song():
+  lyrics = [
+    ("Kapag magulo na ang mundo", 0.0, 3.2), #1:09.8 - 1:13
+    ("ikaw ang payapang hinahanap-hanap kooooo", 3.5, 6.0), #1:14 - 1:20
+    ("Tumakbo ka rin patungo sa'kin", 14.0, 3.0), #1:24 - 1:27
+    ("Kapag bumibigat na ang iyong dibdib", 17.0, 6.7), #1:28 - 1:34.7
+    ("Ika'y sasalubungin", 25.7, 5.5), #Added 2s before Line 5
+    ("ohh, ohhhhhh", 32.2, 3.5), #Added 1.5s before Line 6
+  ]
+
+  start_time = time.time() #Get the exact moment script starts
+
+  threads = []
+  for lyric, delay, duration in lyrics:
+    t = Thread(target=sing_lyric, args=(lyric, delay, duration))
+    threads.append(t)
+    t.start()
+
+  for thread in threads:
+    thread.join()
+
+if __name__ == "__main__":
+  sing_song()
