@@ -1,0 +1,48 @@
+import time
+from threading import Thread, Lock
+import sys
+
+lock = Lock()
+
+def animate_text(text, delay=0.1)  :
+  with lock:
+    for char in text:
+      sys.stdout.write(char)
+      sys.stdout.flush()
+      time.sleep(delay)
+    print()
+
+def sing_lyric(lyric, delay, speed):
+  time.sleep(max(0,delay)) #Ensure no negative delay
+  animate_text(lyric, speed)
+
+def sing_song():
+  lyrics = [
+    ("sarangeuro", 0.1),
+    ("sarangeuro", 0.1),
+    ("matchaaa and manggooo", 0.1),
+    ("geu ane jage", 0.1),
+    ("un padocheoreom", 0.1)
+  ]
+
+  #Adjusted delays based on your request
+  delays = [
+    1.5,     #Line 1: No change
+    5.0,     #Line 2: No change
+    8.8,     #Line 3: Reduced by 1.7
+    16.5,    #Line 4: No change
+    18.0 + 2.0 #Line 5: Added 2s before starting
+  ]
+
+  threads = []
+  for i in range(len(lyrics)):
+    lyric, speed = lyrics[i]
+    t = Thread(target=sing_lyric, args=(lyric, delays[i], speed))
+    threads.append(t)
+    t.start()
+
+  for thread in threads:
+    thread.join()
+
+if __name__ == "__main__":
+  sing_song()
