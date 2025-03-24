@@ -1,0 +1,36 @@
+import time 
+from threading import Thread
+import sys
+
+def animate_text(text, duration):
+    total_chars = len(text)
+    delay = duration / total_chars
+    for char in text:
+        sys.stdout.write(char)
+        sys.stdout.flush()
+        time.sleep(delay)
+    print()
+
+def sing_lyric(lyric, delay, duration=2.0):
+    time.sleep(delay)    # Wait before displaying the lyric
+    animate_text(lyric, duration)
+
+def sing_song():
+    lyrics = [
+        ("Nagsimula sa simple na pasulyap-sulyap, nagpapansin sa'yo", 0.2),
+        ("Umabot sa palitan ng mga mensahe, kilig na kilig ako", 6.0),
+        ("Kamusta? kain na, hello, magandang umaga", 12.0),
+        ("Ingat ka, pahinga, huwag kang masyadong magpupuyat pa", 18.0)
+    ]
+
+    threads = []
+    for lyric, delay in lyrics:
+        t = Thread(target=sing_lyric, args=(lyric, delay))
+        threads.append(t)
+        t.start()
+
+    for thread in threads:
+        thread.join()
+
+if __name__ == "__main__":
+    sing_song()
