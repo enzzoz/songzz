@@ -1,0 +1,39 @@
+import time 
+import sys
+
+def animate_text(text, duration):
+    total_chars = len(text)
+    delay = duration / total_chars
+    for char in text:
+        sys.stdout.write(char)
+        sys.stdout.flush()
+        time.sleep(delay)
+    print()
+
+def sing_song():
+    lyrics = [
+        ("Well, maybe we got lost in translations", 0.09),
+        ("maybe i asked for too much", 0.11),
+        ("But maybe this thing was a masterpiece", 0.28),
+        ("Til you tore it all up", 0.28),
+        ("Running scared, I was there", 0.31),
+        ("I remember it", 0.36),
+        ("All too.. well...", 0.58),
+        ("And you call me up again", 0.97),
+        ("Just to break me like a promise", 0.97),
+        ("So casually cruel", 0.98),
+        ("In the name of being honest", 0.97),
+        ("I'm a crumpled up", 0.99),
+        ("Piece of paper lying here", 0.97),
+        ("Cause I remember it", 0.96),
+        ("All, all, all", 0.110)
+    ]    
+
+    total_delay = 0
+    for lyric, delay in lyrics:
+        total_delay += delay
+        time.sleep(delay)
+        animate_text(lyric, 2.0)
+
+if __name__ == "__main__":
+    sing_song()
